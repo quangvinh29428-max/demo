@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4ef">
+  <meta name="description" content="Huấn luyện viên AI cá nhân hóa lịch tập, dinh dưỡng và phục hồi.">
+  <title>FORME — Huấn luyện viên AI</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="assets/lucide.min.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <section class="auth-screen" id="auth-screen">
+    <div class="auth-card">
+      <a class="auth-brand" href="#" aria-label="FORME"><span class="brand-mark"><i data-lucide="activity"></i></span><span>FORME<span class="brand-dot">.</span></span></a>
+      <p class="eyebrow"><span class="eyebrow-line"></span> HUẤN LUYỆN VIÊN CỦA RIÊNG BẠN</p>
+      <h1 id="auth-title">Chào mừng <span>trở lại.</span></h1>
+      <p class="auth-description" id="auth-description">Đăng nhập để tiếp tục hành trình tập luyện của bạn.</p>
+      <div class="auth-tabs" role="group" aria-label="Chọn hình thức tài khoản">
+        <button class="auth-tab is-active" type="button" data-auth-mode="login">Đăng nhập</button>
+        <button class="auth-tab" type="button" data-auth-mode="signup">Tạo tài khoản</button>
+      </div>
+      <form id="auth-form">
+        <label class="auth-field"><span>Tên đăng nhập</span><input id="auth-username" name="username" type="text" autocomplete="username" placeholder="Ví dụ: nguyenvana hoặc forme123" minlength="3" maxlength="30" autocapitalize="none" spellcheck="false" required></label>
+        <label class="auth-field"><span>Mật khẩu</span><input id="auth-password" name="password" type="password" autocomplete="current-password" minlength="8" placeholder="Tối thiểu 8 ký tự" required></label>
+        <button class="auth-submit" id="auth-submit" type="submit">Đăng nhập <i data-lucide="arrow-right"></i></button>
+      </form>
+      <button class="auth-forgot" id="auth-forgot" type="button">Quên mật khẩu?</button>
+      <p class="auth-status" id="auth-status" role="status" aria-live="polite"></p>
+      <p class="auth-security"><i data-lucide="shield-check"></i> Mật khẩu được xử lý an toàn bởi Supabase Auth.</p>
+    </div>
+  </section>
+  <div class="app-shell hidden" id="app-shell">
+    <aside class="sidebar" aria-label="Điều hướng chính">
+      <a class="brand" href="#overview" aria-label="FORME, trang tổng quan"><span class="brand-mark"><i data-lucide="activity"></i></span><span>FORME<span class="brand-dot">.</span></span></a>
+      <div class="side-label">KHÔNG GIAN CỦA BẠN</div>
+      <nav class="main-nav">
+        <button class="nav-link is-active" data-view="overview"><i data-lucide="layout-dashboard"></i><span>Tổng quan</span></button>
+        <button class="nav-link" data-view="coach"><i data-lucide="heart-pulse"></i><span>AI Coach</span></button>
+        <button class="nav-link" data-view="plan"><i data-lucide="calendar-days"></i><span>Lịch tập</span></button>
+        <button class="nav-link" data-view="library"><i data-lucide="dumbbell"></i><span>Thư viện bài tập</span></button>
+        <button class="nav-link" data-view="fuel"><i data-lucide="salad"></i><span>Dinh dưỡng &amp; nghỉ</span></button>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <section class="coach-note">
+        <span class="coach-note-icon"><i data-lucide="sparkles"></i></span>
+        <p class="coach-kicker">FORME AI COACH</p>
+        <p class="coach-copy">Tập có mục tiêu.<br>Tiến bộ có cơ sở.</p>
+        <button class="text-button" data-open-plan>Tạo giáo án <i data-lucide="arrow-up-right"></i></button>
+      </section>
+      <div class="sidebar-foot"><span class="status-dot"></span> Sẵn sàng đồng hành <span class="version">v1.0</span></div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-mark"><i data-lucide="activity"></i></span> FORME<span class="brand-dot">.</span></div>
+        <div class="breadcrumb"><span>Không gian tập luyện</span><i data-lucide="chevron-right"></i><strong id="view-crumb">Tổng quan</strong></div>
+        <div class="top-actions"><span class="today-label" id="today-label"></span><span class="account-email account-username" id="account-username"></span><button class="button button-outline font-settings-trigger" id="font-settings-trigger" type="button" aria-label="Tùy chỉnh font chữ" title="Tùy chỉnh font chữ">Aa</button><button class="button button-outline account-signout" id="signout-button" type="button">Đăng xuất</button></div>
+      </header>
+
+      <div class="view-panel" id="view-overview">
+        <section class="welcome-row">
+          <div><p class="eyebrow"><span class="eyebrow-line"></span> THỨC DẬY PHIÊN BẢN MẠNH HƠN</p><h1>Chào bạn, <span>chiến binh.</span></h1><p class="subheading">Một kế hoạch tốt bắt đầu từ chính bạn.</p></div>
+          <button class="button button-dark" data-open-plan><i data-lucide="plus"></i> Tạo lịch tập của tôi</button>
+        </section>
+
+        <section class="hero-banner" aria-label="Bắt đầu hành trình tập luyện">
+          <img class="hero-photo" src="assets/forme-gym.svg" alt="Minh họa phòng tập với giá đỡ và tạ">
+          <div class="hero-shade"></div>
+          <div class="hero-content"><span class="hero-chip"><i data-lucide="sparkles"></i> KẾ HOẠCH RIÊNG CHO BẠN</span><h2>Không cần hoàn hảo.<br><span>Chỉ cần bắt đầu.</span></h2><p>Lộ trình tập luyện, ăn uống và phục hồi được điều chỉnh theo nhịp sống của bạn.</p><button class="button button-lime" data-open-plan>Bắt đầu thiết kế <i data-lucide="arrow-right"></i></button></div>
+          <div class="hero-stamp"><span>01</span><small>YOUR<br>NEXT<br>LEVEL</small></div>
+        </section>
+
+        <section class="metrics-grid" aria-label="Tóm tắt kế hoạch">
+          <article class="metric-card metric-plan"><div class="metric-top"><span class="metric-icon lime-icon"><i data-lucide="calendar-check"></i></span><span class="metric-tag">TUẦN NÀY</span></div><p class="metric-value" id="metric-days">3 <small>buổi</small></p><p class="metric-label">Lịch tập của bạn</p><div class="mini-progress"><span id="workout-progress"></span></div><div class="metric-foot"><span id="completed-label">0 buổi hoàn thành</span><span id="progress-percent">0%</span></div></article>
+          <article class="metric-card"><div class="metric-top"><span class="metric-icon coral-icon"><i data-lucide="flame"></i></span><span class="metric-tag">MỤC TIÊU</span></div><p class="metric-value metric-word" id="metric-goal">Tăng cơ</p><p class="metric-label">Hướng đi hiện tại</p><div class="metric-foot muted-foot"><span>Điều chỉnh bất cứ lúc nào</span><i data-lucide="arrow-up-right"></i></div></article>
+          <article class="metric-card"><div class="metric-top"><span class="metric-icon blue-icon"><i data-lucide="moon-star"></i></span><span class="metric-tag">PHỤC HỒI</span></div><p class="metric-value">7–9 <small>giờ</small></p><p class="metric-label">Giấc ngủ khuyến nghị</p><div class="metric-foot muted-foot"><span>Ngủ đủ để tiến bộ tốt hơn</span><i data-lucide="move-up-right"></i></div></article>
+        </section>
+
+        <section class="content-grid">
+          <article class="schedule-section">
+            <div class="section-heading"><div><p class="eyebrow">KẾ HOẠCH CỦA BẠN</p><h2>Tuần này <span class="week-range" id="week-range"></span></h2></div><button class="button button-outline" data-view="plan">Xem lịch <i data-lucide="arrow-up-right"></i></button></div>
+            <div class="workout-list" id="overview-workouts"></div>
+          </article>
+          <aside class="side-stack">
+            <article class="focus-card"><div class="section-heading compact-heading"><div><p class="eyebrow">CÂN BẰNG CƠ THỂ</p><h2>Nhóm cơ</h2></div><i class="heading-mark" data-lucide="scan-line"></i></div><div class="muscle-bars" id="muscle-bars"></div><p class="small-note">Phân bổ nhóm cơ trong giáo án hiện tại.</p></article>
+            <article class="quote-card"><i data-lucide="quote"></i><p>“Kỷ luật là cây cầu nối giữa mục tiêu và thành tựu.”</p><span>— Jim Rohn</span><div class="quote-orbit"></div></article>
+          </aside>
+        </section>
+        <footer class="page-foot"><span>FORME <span class="brand-dot">.</span> HUẤN LUYỆN VIÊN CỦA RIÊNG BẠN</span><span>Chuyển động tốt hơn, mỗi ngày.</span></footer>
+      </div>
+
+      <div class="view-panel hidden" id="view-plan">
+        <section class="page-intro"><div><p class="eyebrow"><span class="eyebrow-line"></span> CẤU TRÚC RÕ RÀNG, TIẾN BỘ BỀN VỮNG</p><h1>Lịch <span>tập luyện.</span></h1><p class="subheading">Mỗi buổi tập được cân chỉnh theo trình độ và quỹ thời gian của bạn.</p></div><button class="button button-dark" data-open-plan><i data-lucide="sliders-horizontal"></i> Tùy chỉnh giáo án</button></section>
+        <div class="plan-summary" id="plan-summary"></div>
+        <div class="full-workout-list" id="full-workouts"></div>
+        <footer class="page-foot"><span>FORME <span class="brand-dot">.</span> HUẤN LUYỆN VIÊN CỦA RIÊNG BẠN</span><span>Nghe cơ thể. Tăng tải từ từ.</span></footer>
+      </div>
+
+      <div class="view-panel hidden" id="view-coach">
+        <section class="page-intro"><div><p class="eyebrow"><span class="eyebrow-line"></span> LẮNG NGHE CƠ THỂ TRƯỚC KHI VẬN ĐỘNG</p><h1>AI Coach <span>của bạn.</span></h1><p class="subheading">Bắt đầu bằng vài câu hỏi sức khỏe để nhận gợi ý vận động và phục hồi phù hợp.</p></div></section>
+        <section class="coach-workspace">
+          <div class="coach-privacy"><i data-lucide="shield-check"></i><p><strong>Quyền riêng tư là ưu tiên.</strong> Trước khi hỏi sức khỏe, FORME sẽ xin phép gửi câu trả lời của bạn đến nhà cung cấp AI bên ngoài. Nếu bạn không đồng ý, nội dung sẽ không được gửi. Hội thoại không được lưu vào hồ sơ FORME.</p></div>
+          <div class="coach-chat-header"><div class="coach-avatar"><i data-lucide="sparkles"></i></div><div><strong>FORME AI Coach</strong><span><i></i> Sẵn sàng trò chuyện</span></div><button class="button button-outline" id="coach-reset" type="button">Cuộc trò chuyện mới</button></div>
+          <div class="coach-messages" id="coach-messages" aria-label="Cuộc trò chuyện với AI Coach" aria-live="polite">
+            <article class="coach-message coach-message-assistant"><strong>FORME AI Coach</strong><p>Chào bạn! Trước khi bắt đầu, mình cần xin phép gửi nội dung bạn chia sẻ đến AI bên ngoài để trò chuyện và cá nhân hóa gợi ý. Bạn có thể từ chối hoặc dừng bất cứ lúc nào.</p></article>
+          </div>
+          <div class="coach-chat-controls" id="coach-start"><button class="button button-dark" id="coach-start-button" type="button">Đồng ý và bắt đầu <i data-lucide="arrow-right"></i></button><button class="coach-choice" id="coach-decline-button" type="button">Không đồng ý</button></div>
+          <form class="coach-chat-form hidden" id="coach-intake-form"><label class="sr-only" for="coach-intake-input">Trả lời AI Coach</label><textarea id="coach-intake-input" rows="2" maxlength="600" placeholder="Nhập câu trả lời ngắn gọn..." required></textarea><button class="button button-dark" type="submit" aria-label="Gửi câu trả lời"><i data-lucide="send"></i></button></form>
+          <section class="coach-alert hidden" id="coach-alert" role="alert"><i data-lucide="circle-alert"></i><div><h2>Ưu tiên an toàn của bạn</h2><p>Vì bạn đã cho biết từng có triệu chứng đáng lo khi vận động, FORME không thể đề xuất bài tập lúc này. Nếu triệu chứng đang xảy ra, hãy dừng vận động và tìm trợ giúp y tế khẩn cấp tại địa phương. Trước khi tập lại, hãy trao đổi với bác sĩ hoặc chuyên gia y tế.</p><button class="button button-outline" id="coach-alert-reset" type="button">Bắt đầu cuộc trò chuyện mới</button></div></section>
+          <form class="coach-chat-form hidden" id="coach-chat-form"><label class="sr-only" for="coach-chat-input">Tin nhắn cho AI Coach</label><textarea id="coach-chat-input" rows="2" maxlength="1000" placeholder="Nhắn tin cho AI Coach..." required></textarea><button class="button button-dark" type="submit" aria-label="Gửi tin nhắn"><i data-lucide="send"></i></button></form>
+          <p class="coach-form-note">AI Coach chỉ cung cấp thông tin tham khảo, không chẩn đoán hay thay thế chuyên gia y tế. Nếu có đau ngực, khó thở bất thường hoặc choáng/ngất, hãy dừng vận động và tìm hỗ trợ y tế.</p>
+        </section>
+        <footer class="page-foot"><span>FORME <span class="brand-dot">.</span> HUẤN LUYỆN VIÊN CỦA RIÊNG BẠN</span><span>Lời khuyên tham khảo, không thay thế chuyên gia y tế.</span></footer>
+      </div>
+
+      <div class="view-panel hidden" id="view-library">
+        <section class="page-intro"><div><p class="eyebrow"><span class="eyebrow-line"></span> KỸ THUẬT LÀ NỀN TẢNG</p><h1>Thư viện <span>bài tập.</span></h1><p class="subheading">Khám phá bài tập theo nhóm cơ, phù hợp thiết bị bạn có.</p></div></section>
+        <section class="library-tools"><div class="search-box"><i data-lucide="search"></i><input id="exercise-search" type="search" placeholder="Tìm bài tập hoặc nhóm cơ..." aria-label="Tìm bài tập"></div><div class="filter-row" id="muscle-filters"></div></section>
+        <div class="exercise-grid" id="exercise-grid"></div>
+        <footer class="page-foot"><span>FORME <span class="brand-dot">.</span> HUẤN LUYỆN VIÊN CỦA RIÊNG BẠN</span><span>Ưu tiên kỹ thuật chuẩn.</span></footer>
+      </div>
+
+      <div class="view-panel hidden" id="view-fuel">
+        <section class="page-intro"><div><p class="eyebrow"><span class="eyebrow-line"></span> ĂN ĐỦ, NGỦ SÂU, TẬP CÓ CHỦ ĐÍCH</p><h1>Nạp năng lượng <span>đúng cách.</span></h1><p class="subheading">Khuyến nghị tổng quát để hỗ trợ vận động và phục hồi.</p></div><button class="button button-outline" data-open-plan><i data-lucide="user-round-pen"></i> Cập nhật thể trạng</button></section>
+        <div class="fuel-layout"><section class="nutrition-panel"><div class="section-heading"><div><p class="eyebrow">ƯỚC TÍNH HẰNG NGÀY</p><h2>Dinh dưỡng mục tiêu</h2></div><span class="nutrition-badge"><i data-lucide="sparkles"></i> CÁ NHÂN HÓA</span></div><div id="nutrition-targets"></div><div class="nutrition-note"><i data-lucide="info"></i><p>Đây là ước tính tham khảo, không thay thế tư vấn từ chuyên gia dinh dưỡng. Ưu tiên thực phẩm đa dạng, đủ chất và điều chỉnh theo cảm nhận cơ thể.</p></div></section><section class="recovery-panel"><div class="section-heading"><div><p class="eyebrow">TIẾN BỘ KHI BẠN NGHỈ NGƠI</p><h2>Phục hồi chủ động</h2></div></div><div class="recovery-list"><article><span class="recovery-icon sleep"><i data-lucide="moon"></i></span><div><h3>Ngủ 7–9 tiếng mỗi đêm</h3><p>Giữ giờ ngủ đều đặn; giảm màn hình và caffeine vào cuối ngày.</p></div></article><article><span class="recovery-icon water"><i data-lucide="droplets"></i></span><div><h3>Uống nước theo nhu cầu</h3><p>Chia đều trong ngày, bổ sung thêm khi tập lâu hoặc trời nóng.</p></div></article><article><span class="recovery-icon stretch"><i data-lucide="wind"></i></span><div><h3>Vận động nhẹ ngày nghỉ</h3><p>Đi bộ, giãn cơ nhẹ; nghỉ hoàn toàn nếu đau hoặc kiệt sức.</p></div></article><article><span class="recovery-icon rest"><i data-lucide="heart-pulse"></i></span><div><h3>Cho nhóm cơ 48 giờ</h3><p>Tránh tập nặng cùng một nhóm cơ trong hai ngày liên tiếp.</p></div></article></div></section></div>
+        <footer class="page-foot"><span>FORME <span class="brand-dot">.</span> HUẤN LUYỆN VIÊN CỦA RIÊNG BẠN</span><span>Phục hồi cũng là một phần của giáo án.</span></footer>
+      </div>
+    </main>
+  </div>
+
+  <dialog class="font-settings-dialog" id="font-settings-dialog" aria-labelledby="font-settings-title">
+    <form method="dialog" class="font-settings-inner">
+      <header class="font-settings-header">
+        <div><p class="eyebrow">CÁ NHÂN HÓA GIAO DIỆN</p><h2 id="font-settings-title">Kiểu chữ <span>của bạn.</span></h2></div>
+        <button class="icon-button" type="submit" aria-label="Đóng"><i data-lucide="x"></i></button>
+      </header>
+      <label class="font-settings-field" for="font-family-select"><span>Chọn font chữ</span><select id="font-family-select">
+        <option value="forme">FORME hiện đại</option>
+        <option value="system">Hệ thống gọn gàng</option>
+        <option value="rounded">Tròn, thân thiện</option>
+        <option value="serif">Có chân, cổ điển</option>
+      </select></label>
+      <p class="font-settings-preview">Tập có mục tiêu. Tiến bộ có cơ sở.</p>
+      <p class="font-settings-note">Lựa chọn được lưu theo tài khoản và đồng bộ khi bạn đăng nhập trên thiết bị khác.</p>
+    </form>
+  </dialog>
+
+  <div class="modal-backdrop hidden" id="plan-modal" role="presentation">
+    <section class="plan-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-head"><div><p class="eyebrow"><span class="eyebrow-line"></span> THIẾT KẾ LỘ TRÌNH</p><h2 id="modal-title">Bắt đầu từ <span>bạn.</span></h2><p>Cho FORME biết một chút về mục tiêu của bạn.</p></div><button class="icon-button" id="close-modal" aria-label="Đóng"><i data-lucide="x"></i></button></div>
+      <form id="plan-form">
+        <div class="form-grid">
+          <label class="field"><span>Trình độ</span><select name="level"><option value="beginner">Mới bắt đầu</option><option value="intermediate">Cơ bản / trung cấp</option><option value="athlete">Vận động viên</option></select></label>
+          <label class="field"><span>Mục tiêu chính</span><select name="goal"><option value="muscle">Tăng cơ</option><option value="strength">Tăng sức mạnh</option><option value="fatloss">Giảm mỡ, giữ cơ</option><option value="fitness">Sức khỏe toàn diện</option></select></label>
+          <label class="field"><span>Số buổi mỗi tuần</span><select name="days"><option value="2">2 buổi</option><option value="3" selected>3 buổi</option><option value="4">4 buổi</option><option value="5">5 buổi</option><option value="6">6 buổi</option></select></label>
+          <label class="field"><span>Dụng cụ</span><select name="equipment"><option value="gym">Phòng gym đầy đủ</option><option value="dumbbells">Tạ đơn / dây kháng lực</option><option value="bodyweight">Trọng lượng cơ thể</option></select></label>
+          <label class="field"><span>Cân nặng (kg)</span><input name="weight" type="number" min="35" max="250" value="65" required></label>
+          <label class="field"><span>Nhóm cơ ưu tiên</span><select name="focus"><option value="balanced">Toàn thân cân bằng</option><option value="chest">Ngực &amp; tay sau</option><option value="back">Lưng &amp; tay trước</option><option value="legs">Chân &amp; mông</option><option value="core">Core &amp; thể lực</option></select></label>
+        </div>
+        <p class="form-safety"><i data-lucide="shield-check"></i> Nếu có chấn thương hoặc bệnh lý, hãy hỏi ý kiến chuyên gia trước khi tập.</p>
+        <div class="modal-actions"><button type="button" class="button button-outline" id="cancel-modal">Để sau</button><button type="submit" class="button button-dark">Tạo giáo án <i data-lucide="arrow-right"></i></button></div>
+      </form>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <nav class="mobile-nav" aria-label="Điều hướng di động"><button class="nav-link is-active" data-view="overview"><i data-lucide="layout-dashboard"></i><span>Tổng quan</span></button><button class="nav-link" data-view="coach"><i data-lucide="heart-pulse"></i><span>AI Coach</span></button><button class="nav-link" data-view="plan"><i data-lucide="calendar-days"></i><span>Lịch tập</span></button><button class="nav-link" data-view="library"><i data-lucide="dumbbell"></i><span>Bài tập</span></button><button class="nav-link" data-view="fuel"><i data-lucide="salad"></i><span>Ăn &amp; nghỉ</span></button></nav>
+</body>
+</html>
